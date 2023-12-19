@@ -33,9 +33,24 @@
             <button onclick="goBack()" class="btn btn-secondary mt-3">戻る</button>
 
             <script>
-                function goBack() {
-                    window.location.href = document.referrer;
-                }
+                 function goBack() {
+        window.location.href = document.referrer;
+    }
+
+    document.getElementById('customer-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        // フォームのデータをLocalStorageに保存
+        localStorage.setItem('savedCompanyName', formData.get('companyName'));
+        localStorage.setItem('savedIndustry', formData.get('industry'));
+        localStorage.setItem('savedContact', formData.get('contact'));
+        localStorage.setItem('savedLocation', formData.get('location'));
+
+        // add-confirm.htmlにリダイレクト
+        window.location.href = 'add-confirm.html';
+    });
+                
             </script>
             
     </div>

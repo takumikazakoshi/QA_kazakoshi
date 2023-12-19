@@ -10,7 +10,7 @@ app.use(cors());
 const { Pool } = require("pg");
 const pool = new Pool({
   user: "user_3523", // PostgreSQLのユーザー名に置き換えてください
-  host: "172.19.0.3", //自分のデータベースの番号
+  host: "172.19.0.2", //自分のデータベースの番号
   database: "crm_3523", // PostgreSQLのデータベース名に置き換えてください
   password: "pass_3523", // PostgreSQLのパスワードに置き換えてください
   port: 5432,
@@ -18,6 +18,17 @@ const pool = new Pool({
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+});
+
+app.get("/detail-customer/:customerId", async (req, res) => {
+  try {
+    const customerId = req.params.customerId;
+    const customer = await pool.query("SELECT * FROM customers WHERE customer_id = $1", [customerId]);
+    res.json(customer.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.json({ error: "Error fetching customer details" });
+  }
 });
 
 app.get("/customers", async (req, res) => {

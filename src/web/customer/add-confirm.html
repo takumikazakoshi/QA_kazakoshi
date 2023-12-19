@@ -9,10 +9,66 @@
 </head>
 <body>
     <div class="container mt-5">
+        <h2 class="mb-4">確認画面</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">顧客情報</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>会社名: </strong><span id="companyName"></span></p>
+                        <p><strong>業種: </strong><span id="industry"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>連絡先: </strong><span id="contact"></span></p>
+                        <p><strong>所在地: </strong><span id="location"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- 確認ボタン -->
+         <button onclick="confirmData()" class="btn btn-primary mt-3">確認</button>
         <!-- ここにHTMLを書く -->
     </div>
-    <script type="module">
-        <!-- ここにJSを書く -->
+    <script>
+        function displayCustomerInfo() {
+            const companyName = localStorage.getItem('savedCompanyName');
+            const industry = localStorage.getItem('savedIndustry');
+            const contact = localStorage.getItem('savedContact');
+            const location = localStorage.getItem('savedLocation');
+
+            document.getElementById('companyName').innerText = companyName;
+            document.getElementById('industry').innerText = industry;
+            document.getElementById('contact').innerText = contact;
+            document.getElementById('location').innerText = location;
+        }
+
+        window.onload = function() {
+            displayCustomerInfo();
+        };
+
+        function confirmData() {
+            // 確認ボタンがクリックされた時の処理
+            alert('確認しました！');
+
+            // 確認ボタンを押した際にLocalStorageにデータを保存する
+            const companyName = localStorage.getItem('savedCompanyName');
+            const industry = localStorage.getItem('savedIndustry');
+            const contact = localStorage.getItem('savedContact');
+            const location = localStorage.getItem('savedLocation');
+
+            // 保存するデータがある場合のみLocalStorageに保存する
+            if (companyName && industry && contact && location) {
+                // データを保存
+                localStorage.setItem('confirmedCompanyName', companyName);
+                localStorage.setItem('confirmedIndustry', industry);
+                localStorage.setItem('confirmedContact', contact);
+                localStorage.setItem('confirmedLocation', location);
+
+                // 画面遷移
+                window.location.href = 'index.html';
+            }
+        }
     </script>
     <!-- BootstrapのJavaScriptの読み込み -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

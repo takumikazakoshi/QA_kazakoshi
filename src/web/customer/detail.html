@@ -1,0 +1,61 @@
+detail.html
+
+<!-- detail.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顧客情報</title>
+    <!-- Bootstrap CSSの読み込み -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">顧客情報</h2>
+        <div id="customer-details">
+            <!-- 顧客情報の表示 -->
+            <p><strong>会社名:</strong> <span id="companyName"></span></p>
+            <p><strong>業種:</strong> <span id="industry"></span></p>
+            <p><strong>連絡先:</strong> <span id="contact"></span></p>
+            <p><strong>所在地:</strong> <span id="location"></span></p>
+            <p><strong>作成日時:</strong> <span id="createdDate"></span></p>
+            <p><strong>更新日時:</strong> <span id="updatedDate"></span></p>
+            <!-- 他のカラムも同様に追加 -->
+        </div>
+        <!-- 戻るボタン -->
+        <button onclick="goBack()" class="btn btn-secondary mt-3">戻る</button>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = document.referrer;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const customerId = urlParams.get('id');
+            const apiUrl = 'http://localhost:3523';
+
+            fetch(`${apiUrl}/detail-customer/${customerId}`)
+                .then((response) => response.json())
+                .then((customer) => {
+                    document.getElementById('companyName').textContent = customer.company_name;
+                    document.getElementById('industry').textContent = customer.industry;
+                    document.getElementById('contact').textContent = customer.contact;
+                    document.getElementById('location').textContent = customer.location;
+                    document.getElementById('createdDate').textContent = customer.created_date;
+                    document.getElementById('updatedDate').textContent = customer.updated_date;
+                    // 他のカラムも同様に追加
+                })
+                .catch((error) => console.error(error));
+        });
+    </script>
+
+    <!-- BootstrapのJavaScriptの読み込み -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
+
