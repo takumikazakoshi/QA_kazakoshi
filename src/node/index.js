@@ -41,6 +41,27 @@ app.get("/customers", async (req, res) => {
   }
 });
 
+// DELETEリクエストで顧客を削除するエンドポイントを追加
+app.delete("/delete-customer/:customerId", async (req, res) => {
+  try {
+    const customerId = req.params.customerId;
+    // データベースから顧客を削除するクエリを実行
+    const deletedCustomer = await pool.query("DELETE FROM customers WHERE customer_id = $1", [customerId]);
+
+    // 削除が成功したかどうかを確認し、成功時に適切なレスポンスを返す
+    if (deletedCustomer.rowCount > 0) {
+      res.status(200).json({ success: true, message: "顧客情報を削除しました" });
+    } else {
+      res.status(404).json({ success: false, message: "顧客が見つかりませんでした" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "顧客情報の削除中にエラーが発生しました" });
+  }
+});
+
+
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

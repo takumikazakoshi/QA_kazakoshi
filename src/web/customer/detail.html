@@ -1,8 +1,6 @@
-detail.html
-
-<!-- detail.html -->
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +8,7 @@ detail.html
     <!-- Bootstrap CSSの読み込み -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
+
 <body>
     <div class="container mt-5">
         <h2 class="mb-4">顧客情報</h2>
@@ -23,7 +22,8 @@ detail.html
             <p><strong>更新日時:</strong> <span id="updatedDate"></span></p>
             <!-- 他のカラムも同様に追加 -->
         </div>
-        <!-- 戻るボタン -->
+        <!-- 削除ボタンと戻るボタン -->
+        <button onclick="deleteCustomer()" class="btn btn-danger mt-3">顧客情報を削除</button>
         <button onclick="goBack()" class="btn btn-secondary mt-3">戻る</button>
     </div>
 
@@ -32,10 +32,43 @@ detail.html
             window.location.href = document.referrer;
         }
 
+        function deleteCustomer() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const customerId = urlParams.get('id');
+            const apiUrl = 'http://localhost:3523';
+
+            const confirmDelete = confirm('顧客情報を削除してもよろしいですか？');
+
+            if (confirmDelete) {
+                fetch(`${apiUrl}/delete-customer/${customerId}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(data.message); // 削除メッセージを表示
+                        window.location.href = 'list.html'; // リストページにリダイレクト
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the delete request:', error);
+                        alert('顧客情報を削除できませんでした。');
+                    });
+            }
+        }
+
+
+
+
         document.addEventListener("DOMContentLoaded", () => {
             const urlParams = new URLSearchParams(window.location.search);
             const customerId = urlParams.get('id');
             const apiUrl = 'http://localhost:3523';
+
+
 
             fetch(`${apiUrl}/detail-customer/${customerId}`)
                 .then((response) => response.json())
@@ -57,5 +90,5 @@ detail.html
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
-</html>
 
+</html>
