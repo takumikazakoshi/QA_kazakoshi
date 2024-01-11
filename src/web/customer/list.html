@@ -32,7 +32,7 @@
 
       document.addEventListener("DOMContentLoaded", () => {
   const list = document.getElementById("customer-list");
-  const apiUrl = 'http://localhost:3523';
+  const apiUrl = '/api_takumi_kazakoshi';
 
   fetch(`${apiUrl}/customers`)
     .then((response) => response.json())
